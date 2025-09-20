@@ -1,3 +1,5 @@
+<!-- templates/base.html -->
+
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
     <a class="navbar-brand" href="{% url 'home' %}">Blog</a>
@@ -8,21 +10,45 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <!-- Main links -->
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+          <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" 
+             aria-current="page" href="{% url 'home' %}">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'about' %}">About</a>
+          <a class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}" 
+             href="{% url 'about' %}">About</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+          <a class="nav-link {% if request.resolver_match.url_name == 'post_list' %}active{% endif %}" 
+             href="{% url 'posts:list' %}">Posts</a>
         </li>
+
+        <!-- Auth links -->
+        {% if user.is_authenticated %}
+          <li class="nav-item">
+            <form method="post" action="{% url 'logout' %}" class="d-inline">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-link nav-link d-inline p-0">Log Out</button>
+            </form>
+          </li>
+        {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'login' %}">Log In</a>
+          </li>
+        {% endif %}
       </ul>
 
-      <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
+      <!-- User badge -->
+      {% if user.is_authenticated %}
+        <div class="d-flex">
+          <span class="badge rounded-pill text-bg-success">{{ user.username }}</span>
+        </div>
+      {% endif %}
     </div>
   </div>
 </nav>
+
+{% block content %}
+<!-- Page-specific content will go here -->
+{% endblock %}
