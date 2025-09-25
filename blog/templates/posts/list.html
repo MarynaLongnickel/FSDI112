@@ -5,14 +5,22 @@
 {% endblock %}
 
 {% block content %}
-    <div>
-        {% for item in post_list %}
-            <div><a href="{% url 'post_detail' item.id %}">{{item.title}}</a></div>
-            <div>{{ item.subtitle }}</div>
-            <div>{{ item.body }}</div>
-            <div>{{ item.author }}</div>
-            <div>{{ item.created_on }}</div>
-            <hr/>
-        {% endfor %}
-    </div>
+<div class="container mt-4">
+    <h1>Published Posts</h1>
+
+    {% for item in post_list %}
+      <div class="mb-4 p-3 border rounded">
+        <h3>
+          <!-- This will go to /posts/3 -->
+          <a href="{% url 'posts:detail' item.pk %}" class="text-decoration-none">
+            {{ item.title }}
+          </a>
+        </h3>
+        <h6 class="text-muted">by {{ item.author }}</h6>
+        <p>Status: {{ item.status }}</p>
+      </div>
+    {% empty %}
+      <p>No posts found.</p>
+    {% endfor %}
+</div>
 {% endblock %}

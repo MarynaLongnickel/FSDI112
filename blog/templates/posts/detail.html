@@ -1,17 +1,17 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    {{single_post.title}}
+    {{ single_post.title }}
 {% endblock %}
 
 {% block content %}
-    <h1>Post #{{single_post.id}}</h1>
-    <h2>{{single_post.title}}</h2>
-    <h5>{{single_post.subtitle}}</h5>
-    <small>{{single_post.author}}</small>
-    <strong>Created on {{single_post.created_on}}</strong>
-    <p>{{single_post.body}}</p>
+    <h1>Post #{{ single_post.id }}</h1>
+    <h2>{{ single_post.title }}</h2>
+    <h5>{{ single_post.subtitle }}</h5>
+    <small>{{ single_post.author }}</small>
+    <strong>Created on {{ single_post.created_on }}</strong>
+    <p>{{ single_post.body }}</p>
     <br>
-    <a href="{% url 'post_delete' single_post.id %}" class="btn btn-danger">Delete</a>
-    <a href="{% url 'post_update' single_post.id %}" class="btn btn-primary">Edit</a>
+    <a href="{% url 'posts:delete' single_post.id %}" class="btn btn-danger">Delete</a>
+    <a href="{% url 'posts:edit' single_post.id %}" class="btn btn-primary">Edit</a>
 {% endblock content %}

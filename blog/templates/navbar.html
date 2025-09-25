@@ -1,5 +1,3 @@
-<!-- templates/base.html -->
-
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
     <a class="navbar-brand" href="{% url 'home' %}">Blog</a>
@@ -20,12 +18,22 @@
              href="{% url 'about' %}">About</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {% if request.resolver_match.url_name == 'post_list' %}active{% endif %}" 
+          <a class="nav-link {% if request.resolver_match.url_name == 'list' %}active{% endif %}" 
              href="{% url 'posts:list' %}">Posts</a>
         </li>
 
         <!-- Auth links -->
         {% if user.is_authenticated %}
+          <!-- New Drafts and Archived links -->
+          <li class="nav-item">
+            <a class="nav-link {% if request.resolver_match.url_name == 'drafts' %}active{% endif %}" 
+               href="{% url 'posts:drafts' %}">Drafts</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if request.resolver_match.url_name == 'archived' %}active{% endif %}" 
+               href="{% url 'posts:archived' %}">Archived</a>
+          </li>
+
           <li class="nav-item">
             <form method="post" action="{% url 'logout' %}" class="d-inline">
               {% csrf_token %}

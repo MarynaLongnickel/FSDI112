@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Your Draft Posts</h1>
+<ul>
+  {% for post in draft_list %}
+    <li><a href="{% url 'posts:detail' post.pk %}">{{ post.title }}</a></li>
+  {% empty %}
+    <li>No drafts found.</li>
+  {% endfor %}
+</ul>
+{% endblock %}
