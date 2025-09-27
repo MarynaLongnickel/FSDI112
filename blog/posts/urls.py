@@ -2,7 +2,7 @@ from django.urls import path
 from .views import (
     PostListView, PostDetailView, PostCreateView,
     PostDeleteView, PostUpdateView,
-    PostDraftListView, PostArchivedListView   # <-- new
+    PostDraftListView, PostArchivedListView
 )
 
 app_name = "posts"

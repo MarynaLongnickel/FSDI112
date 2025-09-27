@@ -9,7 +9,8 @@ from django.views.generic import (
 from .models import Post, Status
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy
-from django.contrib.auth.mixins import LoginRequiredMixin   # <-- new
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+
 
 class PostListView(ListView):
     template_name = "posts/list.html"
@@ -22,10 +23,12 @@ class PostListView(ListView):
         print(context)
         return context
 
+
 class PostDetailView(DetailView):
     template_name = "posts/detail.html"
     model = Post
     context_object_name = "single_post"
+
 
 class PostCreateView(CreateView):
     template_name = "posts/new.html"
@@ -33,21 +36,28 @@ class PostCreateView(CreateView):
     fields = ["title", "subtitle", "body", "status"]
 
     def form_valid(self, form):
-        form.instance.author = User.objects.filter(is_superuser=True).first()
+        form.instance.author = self.request.user
         return super().form_valid(form)
 
     def get_success_url(self):
         return reverse_lazy("posts:detail", kwargs={"pk": self.object.pk})
-    
+
+
 class PostDeleteView(DeleteView):
     template_name = "posts/delete.html"
     model = Post
-    success_url = reverse_lazy("posts")
+    success_url = reverse_lazy("posts:list")
+
 
 class PostUpdateView(UpdateView):
     template_name = "posts/edit.html"
     model = Post
     fields = ["title", "subtitle", "body", "status"]
+
+    def get_success_url(self):
+        # redirect to detail page of updated post
+        return reverse_lazy("posts:detail", kwargs={"pk": self.object.pk})
+
 
 class PostDraftListView(LoginRequiredMixin, ListView):
     template_name = "posts/drafts.html"
@@ -56,6 +66,7 @@ class PostDraftListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         status = Status.objects.get(name="draft")
         return Post.objects.filter(status=status, author=self.request.user).order_by("created_on").reverse()
+
 
 class PostArchivedListView(LoginRequiredMixin, ListView):
     template_name = "posts/archived.html"

@@ -24,6 +24,7 @@
 
         <!-- Auth links -->
         {% if user.is_authenticated %}
+
           <!-- New Drafts and Archived links -->
           <li class="nav-item">
             <a class="nav-link {% if request.resolver_match.url_name == 'drafts' %}active{% endif %}" 
@@ -32,6 +33,10 @@
           <li class="nav-item">
             <a class="nav-link {% if request.resolver_match.url_name == 'archived' %}active{% endif %}" 
                href="{% url 'posts:archived' %}">Archived</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if request.resolver_match.url_name == 'posts:new' %}active{% endif %}" 
+               href="{% url 'posts:new' %}">New Post</a>
           </li>
 
           <li class="nav-item">
